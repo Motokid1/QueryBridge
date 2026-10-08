@@ -212,4 +212,4 @@ On subsequent runs, starting the app normally does not require repeating setup. 
 ---
 
 **Maintainer:** [GitHub — Motokid1](https://github.com/Motokid1)  
-**Reference:** Local Lens project specification and implementation review, 7 October 2026.
+**Reference:** QueryBridge project specification and implementation review, 7 October 2026.
