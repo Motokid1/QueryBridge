@@ -1,0 +1,345 @@
+
+# =====================================================
+# COMMON GITIGNORE
+# PatientScope / QueryBridge
+# Python + FastAPI + React + Vite
+# =====================================================
+
+
+# =====================================================
+# 1. ENVIRONMENT VARIABLES AND SECRETS
+# =====================================================
+
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+*.env
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+credentials.json
+service-account.json
+secrets.json
+secrets.yaml
+secrets.yml
+*.secret
+
+# Cloud credentials
+.aws/
+.azure/
+.gcloud/
+terraform.tfstate
+terraform.tfstate.*
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+
+# =====================================================
+# 2. PYTHON
+# =====================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.so
+*.pyd
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+wheels/
+pip-wheel-metadata/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+
+.tox/
+.nox/
+.hypothesis/
+
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+junit.xml
+test-results/
+
+*.prof
+*.pstats
+
+
+# =====================================================
+# 3. PYTHON VIRTUAL ENVIRONMENTS
+# =====================================================
+
+.venv/
+venv/
+env/
+ENV/
+virtualenv/
+.python-version
+
+pip-log.txt
+pip-delete-this-directory.txt
+
+
+# =====================================================
+# 4. NODE.JS / REACT / VITE
+# =====================================================
+
+node_modules/
+
+dist/
+build/
+.next/
+.nuxt/
+.output/
+
+.vite/
+.cache/
+.parcel-cache/
+
+coverage/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+
+*.tsbuildinfo
+
+
+# =====================================================
+# 5. DATABASE FILES
+# =====================================================
+
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.sqlite-journal
+
+*.db-shm
+*.db-wal
+
+*.sql.gz
+*.dump
+*.bak
+
+database_backups/
+backups/
+db_backups/
+
+# Keep database schemas and migrations tracked.
+
+
+# =====================================================
+# 6. MEDICAL DOCUMENTS / PRIVATE DATA
+# =====================================================
+
+uploads/
+uploaded_files/
+patient_uploads/
+patient_documents/
+
+medical_records/
+clinical_records/
+prescriptions/
+lab_reports/
+
+private_data/
+sensitive_data/
+phi_data/
+
+# Keep synthetic examples in a dedicated,
+# reviewed directory before committing.
+
+
+# =====================================================
+# 7. RAG / EMBEDDINGS / VECTOR STORAGE
+# =====================================================
+
+chroma/
+chroma_db/
+chroma_data/
+chroma_storage/
+
+vector_store/
+vector_db/
+vector_cache/
+embeddings_cache/
+
+faiss_index/
+*.faiss
+
+*.index
+*.npy
+*.npz
+
+huggingface_cache/
+.huggingface/
+.cache/huggingface/
+
+models/
+model_weights/
+
+*.gguf
+*.safetensors
+*.bin
+
+# Note: .bin files used as application assets
+# may need explicit exceptions.
+
+
+# =====================================================
+# 8. TEXT-TO-SQL / EVALUATION ARTIFACTS
+# =====================================================
+
+evaluation_outputs/
+evaluation_results/
+eval_results/
+
+benchmark_outputs/
+benchmark_results/
+
+experiment_outputs/
+run_artifacts/
+
+generated_sql/
+generated_queries/
+
+query_logs/
+execution_logs/
+
+reports/generated/
+
+# Keep evaluation scripts, test cases,
+# reference SQL and public schemas tracked.
+
+
+# =====================================================
+# 9. LOGS AND TEMPORARY FILES
+# =====================================================
+
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+*.pid
+*.seed
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+
+# =====================================================
+# 10. IDE AND EDITOR
+# =====================================================
+
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+*.iml
+*.code-workspace
+
+
+# =====================================================
+# 11. DOCKER
+# =====================================================
+
+docker-data/
+docker-volumes/
+
+*.tar
+
+# Keep Dockerfile, docker-compose.yml
+# and .dockerignore tracked.
+
+
+# =====================================================
+# 12. TERRAFORM / INFRASTRUCTURE
+# =====================================================
+
+.terraform/
+.terraform.lock.hcl.backup
+crash.log
+crash.*.log
+
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+
+# =====================================================
+# 13. LOCAL SSL / SECURITY
+# =====================================================
+
+certs/private/
+ssl/private/
+keys/
+
+*.crt.local
+*.cert.local
+
+# Keep public certificates when required.
+
+
+# =====================================================
+# 14. OPERATING SYSTEM FILES
+# =====================================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+$RECYCLE.BIN/
+*.lnk
+
+
+# =====================================================
+# 15. LOCAL DEVELOPMENT ARTIFACTS
+# =====================================================
+
+scratch/
+sandbox/
+local_data/
+runtime_data/
+
+storage/
+artifacts/local/
+
+*.local

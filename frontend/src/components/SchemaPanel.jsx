@@ -1,0 +1,20 @@
+import React,{useEffect,useState} from 'react';
+import {ShieldCheck,Lock,RefreshCw,Table2,Eye,Check} from 'lucide-react';
+import {api} from '../api';
+export default function SchemaPanel({dataset,onChanged}){
+ const [policy,setPolicy]=useState(dataset.policy),[busy,setBusy]=useState(false),[error,setError]=useState(''),[preview,setPreview]=useState(null),[saved,setSaved]=useState(false);
+ useEffect(()=>{setPolicy(dataset.policy);setPreview(null);setSaved(false)},[dataset]);
+ const sensitive=c=>/password|passwd|secret|token|credential|private.?key|ssn|social.?security|credit.?card|email|phone|address/i.test(c);
+ async function save(){setBusy(true);setError('');try{await api(`/datasets/${dataset.id}/policy`,{method:'PUT',body:{columns:policy}});await onChanged();setSaved(true)}catch(e){setError(e.message)}finally{setBusy(false)}}
+ async function refresh(){setBusy(true);setError('');try{await api(`/datasets/${dataset.id}/refresh`,{method:'POST'});await onChanged()}catch(e){setError(e.message)}finally{setBusy(false)}}
+ async function show(table){setError('');try{setPreview(await api(`/datasets/${dataset.id}/preview?`+new URLSearchParams({table})))}catch(e){setError(e.message)}}
+ const toggle=(table,column,enabled)=>{setSaved(false);setPolicy({...policy,[table]:enabled?[...(policy[table]||[]),column]:(policy[table]||[]).filter(c=>c!==column)})};
+ return <><div className="page-heading"><div><span className="eyebrow">SCHEMA & ACCESS</span><h1>{dataset.name}</h1><p>Tick columns to allow them in future queries and previews. Untick and save to block them; your source data and saved history are unchanged. Disabling a join key can prevent related-table queries. Generated evaluation checks follow this policy; reviewed cases may become invalid.</p></div><div className="heading-actions"><button className="secondary" disabled={busy} onClick={refresh}><RefreshCw size={17}/> Refresh schema</button><button className="primary" disabled={busy} onClick={save}>{saved?<Check size={17}/>:<ShieldCheck size={17}/>} {busy?'Saving…':'Save policy'}</button></div></div>
+ {error&&<p role="alert" className="error">{error}</p>}{saved&&<p className="success">Access policy saved.</p>}
+ {dataset.schema.import_info&&<div className="notice">{dataset.schema.import_info.rows} rows imported. {dataset.schema.import_info.note||'CSV headers were normalized into SQL identifiers. Preview the data before analysis.'}</div>}
+ <div className="schema-grid">{Object.entries(dataset.schema.tables).map(([table,info])=><section className="schema-card" key={table}><div className="schema-title"><h2><Table2 size={18}/> {table}</h2><button className="text-button" onClick={()=>show(table)} disabled={!(dataset.policy[table]?.length)}><Eye size={16}/> Preview</button></div>{Object.entries(info.columns).map(([column,type])=><label className={'column-row '+(sensitive(column)?'blocked':'')} key={column}><input type="checkbox" disabled={sensitive(column)||busy} checked={policy[table]?.includes(column)||false} onChange={e=>toggle(table,column,e.target.checked)}/><span>{column}</span><code>{type}</code>{sensitive(column)&&<Lock size={13} aria-label="Sensitive column excluded"/>}</label>)}</section>)}</div>
+ {!!dataset.schema.relations?.length&&<section className="panel"><h2>Discovered relationships</h2>{dataset.schema.relations.map((r,i)=><code className="relationship" key={i}>{r[0]}.{r[1]} → {r[2]}.{r[3]}</code>)}</section>}
+ {preview&&<section className="panel"><h2>Preview · {preview.table}</h2><DataTable rows={preview.rows}/><small>Up to 10 rows from the saved access policy.</small></section>}
+ </>;
+}
+export function DataTable({rows}){if(!rows?.length)return <p className="muted">No matching rows.</p>;return <div className="table-scroll"><table><thead><tr>{Object.keys(rows[0]).map(k=><th key={k}>{k.replaceAll('_',' ')}</th>)}</tr></thead><tbody>{rows.map((row,i)=><tr key={i}>{Object.entries(row).map(([k,v])=><td key={k}>{v==null?<span className="muted">NULL</span>:String(v)}</td>)}</tr>)}</tbody></table></div>}
